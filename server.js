@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors'); // Asegúrate de importar 'cors'
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -15,14 +16,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Middleware para CORS (Cross-Origin Resource Sharing)
-const cors = require('cors');
 app.use(cors({
     origin: domain, // Permite solicitudes desde el dominio especificado
     optionsSuccessStatus: 200
 }));
 
 // Conexión a MongoDB
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Conectado a MongoDB'))
   .catch(err => console.error(err));
 
@@ -37,6 +37,7 @@ const Url = mongoose.model('Url', urlSchema);
 
 // Endpoint para acortar URL
 app.post('/api/shorten', async (req, res) => {
+    console.log(req.body); // Verifica que estás recibiendo el cuerpo de la solicitud
     const { longUrl } = req.body;
     const uniqueId = Math.random().toString(36).substring(2, 8);
     
@@ -49,13 +50,16 @@ app.post('/api/shorten', async (req, res) => {
 
 // Endpoint para redirigir a URL original
 app.get('/short.url/:id', async (req, res) => {
+    console.log(req.params.id); // Verifica el ID de la URL corta
     const url = await Url.findOne({ shortUrlId: req.params.id });
     if (url) {
+        console.log(url.longUrl); // Verifica la URL larga antes de redirigir
         res.redirect(url.longUrl);
     } else {
         res.status(404).send('URL no encontrada');
     }
 });
+
 
 // Ruta para servir el archivo HTML principal
 app.get('/', (req, res) => {

@@ -23,7 +23,6 @@ MONGO_URI = f"mongodb+srv://{username}:{password}@acortadorurl.y6l52.mongodb.net
 @st.cache_resource
 def init_db():
     try:
-        # Use certifi to provide the CA file for SSL connections
         client = pymongo.MongoClient(MONGO_URI, tls=True, tlsCAFile=certifi.where())
         db = client.url_shortener
         # Test the connection
@@ -49,7 +48,7 @@ def is_valid_url(url):
 def get_base_url():
     """Get the base URL of the Streamlit app."""
     if 'base_url' not in st.session_state:
-        # Set a default base URL for local testing or production
+        # Use BASE_URL from environment or set default for local testing
         st.session_state.base_url = os.getenv('BASE_URL', 'http://localhost:8501')
     return st.session_state.base_url
 

@@ -1,4 +1,10 @@
 streamlit
+datetime
+pandas
+pygments
+faker
+altair
+openpyxl
 pymongo
 python-dotenv
 validators

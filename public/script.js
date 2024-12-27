@@ -14,6 +14,9 @@ function shortenUrl() {
               document.getElementById('visitButton').style.display = 'inline';
               document.getElementById('copyButton').style.display = 'inline';
               document.getElementById('visitButton').setAttribute('onclick', `openInNewTab('${data.shortUrl}')`);
+          }).catch(error => {
+              console.error('Error:', error);
+              alert('Hubo un problema al acortar la URL.');
           });
     }
 }

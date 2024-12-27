@@ -1,0 +1,15 @@
+# Node modules
+node_modules/
+
+# Dotenv file
+.env
+
+# Logs
+logs
+*.log
+
+# Vercel settings
+.vercel/
+
+# Others
+.DS_Store

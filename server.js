@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Middleware para CORS
 app.use(cors({
-    origin: domain, // Permite solicitudes desde el dominio especificado
+    origin: domain,
     optionsSuccessStatus: 200
 }));
 

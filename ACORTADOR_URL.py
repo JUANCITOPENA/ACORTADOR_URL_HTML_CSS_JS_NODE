@@ -23,7 +23,8 @@ MONGO_URI = f"mongodb+srv://{username}:{password}@acortadorurl.y6l52.mongodb.net
 @st.cache_resource
 def init_db():
     try:
-        client = pymongo.MongoClient(MONGO_URI, tlsCAFile=certifi.where())
+        # Use certifi to provide the CA file for SSL connections
+        client = pymongo.MongoClient(MONGO_URI, tls=True, tlsCAFile=certifi.where())
         db = client.url_shortener
         # Test the connection
         client.admin.command('ping')

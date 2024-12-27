@@ -14,6 +14,13 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Middleware para CORS (Cross-Origin Resource Sharing)
+const cors = require('cors');
+app.use(cors({
+    origin: domain, // Permite solicitudes desde el dominio especificado
+    optionsSuccessStatus: 200
+}));
+
 // Conexión a MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('Conectado a MongoDB'))

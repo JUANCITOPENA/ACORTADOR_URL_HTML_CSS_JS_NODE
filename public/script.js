@@ -8,16 +8,20 @@ function shortenUrl() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ longUrl })
-        }).then(response => response.json())
-          .then(data => {
-              document.getElementById('shortUrl').innerText = data.shortUrl;
-              document.getElementById('visitButton').style.display = 'inline';
-              document.getElementById('copyButton').style.display = 'inline';
-              document.getElementById('visitButton').setAttribute('onclick', `openInNewTab('${data.shortUrl}')`);
-          }).catch(error => {
-              console.error('Error:', error);
-              alert('Hubo un problema al acortar la URL.');
-          });
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Error al acortar la URL');
+            }
+            return response.json();
+        }).then(data => {
+            document.getElementById('shortUrl').innerText = data.shortUrl;
+            document.getElementById('visitButton').style.display = 'inline';
+            document.getElementById('copyButton').style.display = 'inline';
+            document.getElementById('visitButton').setAttribute('onclick', `openInNewTab('${data.shortUrl}')`);
+        }).catch(error => {
+            console.error('Error:', error);
+            alert('Hubo un problema al acortar la URL.');
+        });
     }
 }
 

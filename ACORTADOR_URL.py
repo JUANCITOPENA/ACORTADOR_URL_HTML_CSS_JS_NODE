@@ -1,5 +1,6 @@
 import streamlit as st
 import pymongo
+import certifi
 import random
 import string
 from dotenv import load_dotenv
@@ -16,13 +17,13 @@ username = quote_plus("JUANCITOPENA")
 password = quote_plus("P@$$word_1234@&$@JDDLM#*mK2T6vpG&B")
 
 # Construct MongoDB URI with escaped characters
-MONGO_URI = f"mongodb+srv://{username}:{password}@acortadorurl.y6l52.mongodb.net/?retryWrites=true&w=majority&appName=ACORTADORURL"
+MONGO_URI = f"mongodb+srv://{username}:{password}@acortadorurl.y6l52.mongodb.net/?retryWrites=true&w=majority"
 
 # Initialize MongoDB connection as a global variable
 @st.cache_resource
 def init_db():
     try:
-        client = pymongo.MongoClient(MONGO_URI)
+        client = pymongo.MongoClient(MONGO_URI, tlsCAFile=certifi.where())
         db = client.url_shortener
         # Test the connection
         client.admin.command('ping')

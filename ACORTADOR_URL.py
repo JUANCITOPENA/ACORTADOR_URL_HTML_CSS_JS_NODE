@@ -48,7 +48,6 @@ def is_valid_url(url):
 def get_base_url():
     """Get the base URL of the Streamlit app."""
     if 'base_url' not in st.session_state:
-        # Use BASE_URL from environment or set default for local testing
         st.session_state.base_url = os.getenv('BASE_URL', 'http://localhost:8501')
     return st.session_state.base_url
 
@@ -59,15 +58,13 @@ def shorten_url(long_url):
         return None
 
     try:
-        # Check if URL already exists
         existing_url = collection.find_one({"long_url": long_url})
         if existing_url:
             base_url = get_base_url()
             return f"{base_url}?short_id={existing_url['short_id']}"
         
-        # Create new short URL
         short_id = generate_short_id()
-        while collection.find_one({"short_id": short_id}):  # Ensure unique short_id
+        while collection.find_one({"short_id": short_id}):
             short_id = generate_short_id()
         
         base_url = get_base_url()
@@ -128,7 +125,6 @@ def main():
             if short_url:
                 st.success("URL shortened successfully!")
                 
-                # Create columns for better layout
                 col1, col2 = st.columns([3, 1])
                 
                 with col1:
